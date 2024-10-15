@@ -342,16 +342,16 @@ function swEdit() {
 			if ($_FILES['pj']['size']!=0) {
 				if(strtolower(substr($_FILES['pj']['name'],-3))=='php') //rename to phps to avoid code execution
 					move_uploaded_file($_FILES['pj']['tmp_name'], dirname(__FILE__).'/pages/'.$p.'/'.basename($_FILES['pj']['name']).'s.'.date('Ymd-His'));
-				if(strtolower(substr($_FILES['pj']['name'],-3))=='jpg') {//create thumb
-					$jpg = dirname(__FILE__).'/pages/'.$p.'/'.basename($_FILES['pj']['name']).'.'.date('Ymd-His');
-					move_uploaded_file($_FILES['pj']['tmp_name'], $jpg);
-					$IF = new ImageFilter;
-					$IF->loadImage($jpg);
-					$IF->resize(350, 350, 'ratio');
-					$IF->output('JPEG', $jpg.'.350');
-				} else { //gz?
+				// if(strtolower(substr($_FILES['pj']['name'],-3))=='jpg') {//create thumb
+				// 	$jpg = dirname(__FILE__).'/pages/'.$p.'/'.basename($_FILES['pj']['name']).'.'.date('Ymd-His');
+				// 	move_uploaded_file($_FILES['pj']['tmp_name'], $jpg);
+				// 	$IF = new ImageFilter;
+				// 	$IF->loadImage($jpg);
+				// 	$IF->resize(350, 350, 'ratio');
+				// 	$IF->output('JPEG', $jpg.'.350');
+				// } else { //gz?
 					move_uploaded_file($_FILES['pj']['tmp_name'], dirname(__FILE__).'/pages/'.$p.'/'.basename($_FILES['pj']['name']).'.'.date('Ymd-His'));
-				}
+				// }
 			}
 		}
 		header('Location: ./'.$s.'?'.$p);
@@ -503,268 +503,268 @@ function swSpecialSearch() {
 	else echo 'No results!';
 	swFooter();
 }
-class ImageFilter {
-	/*
-	 * $colorsToWork :
-	 * d?termine le nombre de couleur par d?faut sur lequel travaillerons les filtres
-	 * Mettre une valeur faible peut avoir des comportement ?tonnant
-	 * selon la version de la librairie et de la plateforme d'execution.
-	 * En effet si manifestement sous Windows les couleurs sont bien choisit (l'image resultante est plutot fid?le)
-	 * sous Linux le choix est parfois "particulier" et il n'est pas rare d'obtenir un image au teintes
-	 * trop claire ou trop sombre (parfois m?me toutes identiques > donc plus d'image ^^)
-	 *
-	 * $GD_VERSION : Peut prendre la valeur 1 ou 2 selon la version de la librairie GD install? sur le serveur
-	 *
-	 */
-	var $GD_VERSION = 2;
-	var $colorsToWork = 256;
+// class ImageFilter {
+// 	/*
+// 	 * $colorsToWork :
+// 	 * d?termine le nombre de couleur par d?faut sur lequel travaillerons les filtres
+// 	 * Mettre une valeur faible peut avoir des comportement ?tonnant
+// 	 * selon la version de la librairie et de la plateforme d'execution.
+// 	 * En effet si manifestement sous Windows les couleurs sont bien choisit (l'image resultante est plutot fid?le)
+// 	 * sous Linux le choix est parfois "particulier" et il n'est pas rare d'obtenir un image au teintes
+// 	 * trop claire ou trop sombre (parfois m?me toutes identiques > donc plus d'image ^^)
+// 	 *
+// 	 * $GD_VERSION : Peut prendre la valeur 1 ou 2 selon la version de la librairie GD install? sur le serveur
+// 	 *
+// 	 */
+// 	var $GD_VERSION = 2;
+// 	var $colorsToWork = 256;
 
-	function ImageFilter() {
-		$this->resourceImage = NULL;
-	}
+// 	function ImageFilter() {
+// 		$this->resourceImage = NULL;
+// 	}
 
-	function setColorsToWork($nb) {
-		$this->colorsToWork = $nb;
-	}
+// 	function setColorsToWork($nb) {
+// 		$this->colorsToWork = $nb;
+// 	}
 
-	function clear() {
-		imagedestroy($this->resourceImage);
-	}
+// 	function clear() {
+// 		imagedestroy($this->resourceImage);
+// 	}
 
-	/*
-	 * Cr?ation d'une image vierge
-	 * $w=largeur $h=hauteur
-	 *
-	 */
-	function createImage($w, $h) {
-		$this->resourceImage = $this->imagecreate($w, $h);
-	}
+// 	/*
+// 	 * Cr?ation d'une image vierge
+// 	 * $w=largeur $h=hauteur
+// 	 *
+// 	 */
+// 	function createImage($w, $h) {
+// 		$this->resourceImage = $this->imagecreate($w, $h);
+// 	}
 
-	/*
-	 * Chargement d'une image depuis un fichier
-	 *
-	 */
-	function loadImage($path) {
-		$this->resourceImage = $this->loadImageFile($path);
-		return is_resource($this->resourceImage);
-	}
+// 	/*
+// 	 * Chargement d'une image depuis un fichier
+// 	 *
+// 	 */
+// 	function loadImage($path) {
+// 		$this->resourceImage = $this->loadImageFile($path);
+// 		return is_resource($this->resourceImage);
+// 	}
 
-	/*
-	 * M?thode priv? (pas vraiment possible en PHP4) g?rant l'ouverture et la mise en m?moire d'une image depuis un fichier
-	 * utilis? entre autre par loadImage(...)  et Stamp(...)
-	 *
-	 */
-	function loadImageFile($path) {
-		$info = getimagesize($path);
-		switch ($info[2]) {
-		case 3 :
-			return imagecreatefrompng($path);
-		case 2 :
-			return imageCreateFromJpeg($path);
-		case 1 :
-			return imagecreatefromgif($path);
-		default :
-			return false;
-		}
-	}
+// 	/*
+// 	 * M?thode priv? (pas vraiment possible en PHP4) g?rant l'ouverture et la mise en m?moire d'une image depuis un fichier
+// 	 * utilis? entre autre par loadImage(...)  et Stamp(...)
+// 	 *
+// 	 */
+// 	function loadImageFile($path) {
+// 		$info = getimagesize($path);
+// 		switch ($info[2]) {
+// 		case 3 :
+// 			return imagecreatefrompng($path);
+// 		case 2 :
+// 			return imageCreateFromJpeg($path);
+// 		case 1 :
+// 			return imagecreatefromgif($path);
+// 		default :
+// 			return false;
+// 		}
+// 	}
 
-	/*
-	 * M?thode de lecture des dimension de l'image actuellement en court de traitement
-	 * il est aussi possible de lui passer en param?tre un objet de type image
-	 *
-	 */
-	function getImageSize($img = NULL) {
-		if (is_resource($img)) {
-			return array (
-					   'w' => imagesx($img
-									 ), 'h' => imagesy($img));
-		} else {
-			return array (
-					   'w' => imagesx($this->resourceImage
-									 ), 'h' => imagesy($this->resourceImage));
-		}
-	}
+// 	/*
+// 	 * M?thode de lecture des dimension de l'image actuellement en court de traitement
+// 	 * il est aussi possible de lui passer en param?tre un objet de type image
+// 	 *
+// 	 */
+// 	function getImageSize($img = NULL) {
+// 		if (is_resource($img)) {
+// 			return array (
+// 					   'w' => imagesx($img
+// 									 ), 'h' => imagesy($img));
+// 		} else {
+// 			return array (
+// 					   'w' => imagesx($this->resourceImage
+// 									 ), 'h' => imagesy($this->resourceImage));
+// 		}
+// 	}
 
-	/*
-	 * M�thode de sortie
-	 * Il est possible de g�n�rer soit des PNG soit des JPEG (gestion du niveau de qualit?)
-	 * l'image peut soit ?tre envoy? soit en flux direct, soit enregistr? dans un fichier
-	 * ex:
-	 * $IF->output('JPEG',NULL,NULL,80); // JPEG Q80 en flux direct
-	 * $IF->output('JPEG','cache.jpg',false,80); // JPEG Q80 enregistr? dans cache.jpg sans ?crasement si d?j? existant
-	 */
-	function output($type = 'PNG', $file = NULL, $overwrite = true, $JPG_Q = 90) {
-		if ($file == NULL) {
-			header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-			header('Expires: Thu, 19 Nov 1981 08:52:00 GMT');
-			header('Pragma: no-cache');
-			switch ($type) {
-			case 'PNG' :
-				header('Content-type: image/png');
-				imagepng($this->resourceImage);
-				return true;
-			case 'JPEG' :
-				header('Content-type: image/jpeg');
-				imagejpeg($this->resourceImage, NULL, $JPG_Q);
-				return true;
-			default :
-				return false;
-			}
-		} else {
-			if ($overwrite || !file_exists($file)) {
-				switch ($type) {
-				case 'PNG' :
-					return imagepng($this->resourceImage, $file);
-				case 'JPEG' :
-					return imagejpeg($this->resourceImage, $file, $JPG_Q);
-				default :
-					return false;
-				}
-			}
-		}
-	}
+// 	/*
+// 	 * M�thode de sortie
+// 	 * Il est possible de g�n�rer soit des PNG soit des JPEG (gestion du niveau de qualit?)
+// 	 * l'image peut soit ?tre envoy? soit en flux direct, soit enregistr? dans un fichier
+// 	 * ex:
+// 	 * $IF->output('JPEG',NULL,NULL,80); // JPEG Q80 en flux direct
+// 	 * $IF->output('JPEG','cache.jpg',false,80); // JPEG Q80 enregistr? dans cache.jpg sans ?crasement si d?j? existant
+// 	 */
+// 	function output($type = 'PNG', $file = NULL, $overwrite = true, $JPG_Q = 90) {
+// 		if ($file == NULL) {
+// 			header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+// 			header('Expires: Thu, 19 Nov 1981 08:52:00 GMT');
+// 			header('Pragma: no-cache');
+// 			switch ($type) {
+// 			case 'PNG' :
+// 				header('Content-type: image/png');
+// 				imagepng($this->resourceImage);
+// 				return true;
+// 			case 'JPEG' :
+// 				header('Content-type: image/jpeg');
+// 				imagejpeg($this->resourceImage, NULL, $JPG_Q);
+// 				return true;
+// 			default :
+// 				return false;
+// 			}
+// 		} else {
+// 			if ($overwrite || !file_exists($file)) {
+// 				switch ($type) {
+// 				case 'PNG' :
+// 					return imagepng($this->resourceImage, $file);
+// 				case 'JPEG' :
+// 					return imagejpeg($this->resourceImage, $file, $JPG_Q);
+// 				default :
+// 					return false;
+// 				}
+// 			}
+// 		}
+// 	}
 
-	/**
-	 * M�thode de redimensionnement.
-	 *
-	 * Les deux param�tre $WIDTH et $HEIGHT peuvent ?tre pr?cis? soit en pixel (70) soit en % ('70%')
-	 *
-	 * 3 mode sont possibles : "force", "crop" ou "ratio"
-	 *	- force = par d?formation
-	 *	- crop = par recadrage au centre
-	 *	- ratio = par conservation de l'aspect ratio ($WIDTH et $HEIGHT = Boite de travail)
-	 *
-	 * Le param?tre expand permet de pr?ciser si les agrandissement sont autoris?
-	**/
-	function resize($WIDTH, $HEIGHT, $MODE = 'force', $EXPAND = false) {
-		$info = $this->getImageSize();
-		$imgWidth = $info['w'];
-		$imgHeight = $info['h'];
+// 	/**
+// 	 * M�thode de redimensionnement.
+// 	 *
+// 	 * Les deux param�tre $WIDTH et $HEIGHT peuvent ?tre pr?cis? soit en pixel (70) soit en % ('70%')
+// 	 *
+// 	 * 3 mode sont possibles : "force", "crop" ou "ratio"
+// 	 *	- force = par d?formation
+// 	 *	- crop = par recadrage au centre
+// 	 *	- ratio = par conservation de l'aspect ratio ($WIDTH et $HEIGHT = Boite de travail)
+// 	 *
+// 	 * Le param?tre expand permet de pr?ciser si les agrandissement sont autoris?
+// 	**/
+// 	function resize($WIDTH, $HEIGHT, $MODE = 'force', $EXPAND = false) {
+// 		$info = $this->getImageSize();
+// 		$imgWidth = $info['w'];
+// 		$imgHeight = $info['h'];
 
-		$ratio = $imgWidth / $imgHeight;
+// 		$ratio = $imgWidth / $imgHeight;
 
-		//gestion des dimension en %
-		if (strpos($WIDTH, '%', 0))
-			$WIDTH = $imgWidth * $WIDTH / 100;
-		if (strpos($HEIGHT, '%', 0))
-			$HEIGHT = $imgHeight * $HEIGHT / 100;
+// 		//gestion des dimension en %
+// 		if (strpos($WIDTH, '%', 0))
+// 			$WIDTH = $imgWidth * $WIDTH / 100;
+// 		if (strpos($HEIGHT, '%', 0))
+// 			$HEIGHT = $imgHeight * $HEIGHT / 100;
 
-		//si pas de dimension pr?cis?es alors echec
-		if ($WIDTH == 0 && $HEIGHT == 0)
-			return false;
+// 		//si pas de dimension pr?cis?es alors echec
+// 		if ($WIDTH == 0 && $HEIGHT == 0)
+// 			return false;
 
-		//si jamais une dimension = 0 on d?termine la valeur la plus appropri?.
-		if (min($WIDTH, $HEIGHT) == 0) {
-			switch ($MODE) {
-			case 'crop' : //on coupe en carr?
-				$WIDTH = $HEIGHT = max($WIDTH, $HEIGHT);
-				break;
+// 		//si jamais une dimension = 0 on d?termine la valeur la plus appropri?.
+// 		if (min($WIDTH, $HEIGHT) == 0) {
+// 			switch ($MODE) {
+// 			case 'crop' : //on coupe en carr?
+// 				$WIDTH = $HEIGHT = max($WIDTH, $HEIGHT);
+// 				break;
 
-			case 'force' : //on passe en ratio pour ?viter les d?formation
-				$MODE = 'ratio';
+// 			case 'force' : //on passe en ratio pour ?viter les d?formation
+// 				$MODE = 'ratio';
 
-			case 'ratio' : //on prend une taille tr?s grand pour ne pas limiter sur la cote non pr?cis?
-				if ($WIDTH === 0)
-					$WIDTH = 9999;
-				else
-					$HEIGHT = 9999;
-				break;
+// 			case 'ratio' : //on prend une taille tr?s grand pour ne pas limiter sur la cote non pr?cis?
+// 				if ($WIDTH === 0)
+// 					$WIDTH = 9999;
+// 				else
+// 					$HEIGHT = 9999;
+// 				break;
 
-			default :
-				break;
-			}
-		}
+// 			default :
+// 				break;
+// 			}
+// 		}
 
-		//on d?termine les dimension du resize ($_w et $_h)
-		if ($MODE == 'ratio') {
-			$_w = 99999;
-			if ($HEIGHT > 0) {
-				$_h = $HEIGHT;
-				$_w = $_h * $ratio;
-			}
-			if ($WIDTH > 0 && $_w > $WIDTH) {
-				$_w = $WIDTH;
-				$_h = $_w / $ratio;
-			}
+// 		//on d?termine les dimension du resize ($_w et $_h)
+// 		if ($MODE == 'ratio') {
+// 			$_w = 99999;
+// 			if ($HEIGHT > 0) {
+// 				$_h = $HEIGHT;
+// 				$_w = $_h * $ratio;
+// 			}
+// 			if ($WIDTH > 0 && $_w > $WIDTH) {
+// 				$_w = $WIDTH;
+// 				$_h = $_w / $ratio;
+// 			}
 
-			if (!$EXPAND && $_w > $imgWidth) {
-				$_w = $imgWidth;
-				$_h = $imgHeight;
-			}
-		} else {
-			//par d?coupage de l'image source
-			$_w = $WIDTH;
-			$_h = $HEIGHT;
-		}
+// 			if (!$EXPAND && $_w > $imgWidth) {
+// 				$_w = $imgWidth;
+// 				$_h = $imgHeight;
+// 			}
+// 		} else {
+// 			//par d?coupage de l'image source
+// 			$_w = $WIDTH;
+// 			$_h = $HEIGHT;
+// 		}
 
-		if ($MODE == 'force') {
-			if (!$EXPAND && $_w > $imgWidth)
-				$_w = $imgWidth;
-			if (!$EXPAND && $_h > $imgHeight)
-				$_h = $imgHeight;
+// 		if ($MODE == 'force') {
+// 			if (!$EXPAND && $_w > $imgWidth)
+// 				$_w = $imgWidth;
+// 			if (!$EXPAND && $_h > $imgHeight)
+// 				$_h = $imgHeight;
 
-			$cropW = $imgWidth;
-			$cropH = $imgHeight;
-			$decalW = 0;
-			$decalH = 0;
-		} else { //crop
-			//on d?termine ensuite la zone d'affiche r?el pour l'image
-			$innerRatio = $_w / $_h;
-			if ($ratio >= $innerRatio) {
-				$cropH = $imgHeight;
-				$cropW = $imgHeight * $innerRatio;
-				$decalH = 0;
-				$decalW = ($imgWidth - $cropW) / 2;
-			} else {
-				$cropW = $imgWidth;
-				$cropH = $imgWidth / $innerRatio;
-				$decalW = 0;
-				$decalH = ($imgHeight - $cropH) / 2;
-			}
-		}
+// 			$cropW = $imgWidth;
+// 			$cropH = $imgHeight;
+// 			$decalW = 0;
+// 			$decalH = 0;
+// 		} else { //crop
+// 			//on d?termine ensuite la zone d'affiche r?el pour l'image
+// 			$innerRatio = $_w / $_h;
+// 			if ($ratio >= $innerRatio) {
+// 				$cropH = $imgHeight;
+// 				$cropW = $imgHeight * $innerRatio;
+// 				$decalH = 0;
+// 				$decalW = ($imgWidth - $cropW) / 2;
+// 			} else {
+// 				$cropW = $imgWidth;
+// 				$cropH = $imgWidth / $innerRatio;
+// 				$decalW = 0;
+// 				$decalH = ($imgHeight - $cropH) / 2;
+// 			}
+// 		}
 
-		$img2 = $this->imagecreate($_w, $_h);
-		$this->imagecopyresampled($img2, $this->resourceImage, 0, 0, $decalW, $decalH, $_w, $_h, $cropW, $cropH);
-		imagedestroy($this->resourceImage);
-		$this->resourceImage = $img2;
-		return true;
-	}
-	/**
-	 * On repasse en mode couleur vrai (24bits)
-	 * !!! peut entrainer la suppression de la couche alpha
-	 *
-	 */
-	function palettedToTrueColor() {
-		$info = $this->getImageSize();
-		$img2 = $this->imagecreate($info['w'], $info['h']);
-		$this->imagecopyresampled($img2, $this->resourceImage, 0, 0, 0, 0, $info['w'], $info['h'], $info['w'], $info['h']);
-		imagedestroy($this->resourceImage);
-		$this->resourceImage = $img2;
-	}
+// 		$img2 = $this->imagecreate($_w, $_h);
+// 		$this->imagecopyresampled($img2, $this->resourceImage, 0, 0, $decalW, $decalH, $_w, $_h, $cropW, $cropH);
+// 		imagedestroy($this->resourceImage);
+// 		$this->resourceImage = $img2;
+// 		return true;
+// 	}
+// 	/**
+// 	 * On repasse en mode couleur vrai (24bits)
+// 	 * !!! peut entrainer la suppression de la couche alpha
+// 	 *
+// 	 */
+// 	function palettedToTrueColor() {
+// 		$info = $this->getImageSize();
+// 		$img2 = $this->imagecreate($info['w'], $info['h']);
+// 		$this->imagecopyresampled($img2, $this->resourceImage, 0, 0, 0, 0, $info['w'], $info['h'], $info['w'], $info['h']);
+// 		imagedestroy($this->resourceImage);
+// 		$this->resourceImage = $img2;
+// 	}
 
-	/**
-	 * M?thode de redimesionnement selon la version de librairie GD (1 ou 2)
-	 * GD 1.x ne g?rant pas les images 24bits, elle ne fait pas de r?-?chantillonnage sur les redimensionnemnt
-	 *
-	 */
-	function imagecopyresampled($out, $in, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
-		if ($this->GD_VERSION == 2)
-			return imagecopyresampled($out, $in, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH);
-		else
-			return imagecopyresized($out, $in, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH);
-	}
+// 	/**
+// 	 * M?thode de redimesionnement selon la version de librairie GD (1 ou 2)
+// 	 * GD 1.x ne g?rant pas les images 24bits, elle ne fait pas de r?-?chantillonnage sur les redimensionnemnt
+// 	 *
+// 	 */
+// 	function imagecopyresampled($out, $in, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
+// 		if ($this->GD_VERSION == 2)
+// 			return imagecopyresampled($out, $in, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH);
+// 		else
+// 			return imagecopyresized($out, $in, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH);
+// 	}
 
-	/**
-	 * M?thode de cr?ation d'image  selon la version de librairie GD (1 ou 2)
-	 * GD 1.x ne g?re pas les images en 24bits on cr?e alors une image 256 couleurs
-	 *
-	 */
-	function imagecreate($w, $h) {
-		if ($this->GD_VERSION == 2)
-			return imagecreatetruecolor($w, $h);
-		else
-			return imagecreate($w, $h);
-	}
-}
+// 	/**
+// 	 * M?thode de cr?ation d'image  selon la version de librairie GD (1 ou 2)
+// 	 * GD 1.x ne g?re pas les images en 24bits on cr?e alors une image 256 couleurs
+// 	 *
+// 	 */
+// 	function imagecreate($w, $h) {
+// 		if ($this->GD_VERSION == 2)
+// 			return imagecreatetruecolor($w, $h);
+// 		else
+// 			return imagecreate($w, $h);
+// 	}
+// }
 
 ?>
