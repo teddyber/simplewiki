@@ -26,8 +26,6 @@ $s = (basename(__FILE__)=='index.php')?'':basename(__FILE__);
 if(isset($_COOKIE['PHPSESSID']) || $m=='edit' || $m=='history') // we only want a session if we already have one of if we need one.
 	session_start();
 
-//echo $p;
-
 /* special pages *************************/
 if(substr($p,0,1)==':') { //special pages
 	if ($p==':all') {
@@ -110,7 +108,7 @@ function txt2html($txt,$page='') {
 			$line = preg_replace('/!(.*)!/U', '</'.$previous.'>'."\n".'<h4>$1</h4>'."\n".'<'.$current.'>', $line);
 			$line = preg_replace('/\?\?([^\|]+)\|(.*)\?\?/U', '<acronym title="$2">$1</acronym>', $line);
 			$line = preg_replace_callback('/\$\$(.*)\$\$/U','footnote',$line);
-			$line = preg_replace_callback('/\(\(([^|]+\.(png|jpg|gif))\|?(.*)\)\)/Ui', 'img', $line);//TODO jpg and ?? external img??
+			$line = preg_replace_callback('/\(\(([^|]+\.(png|jpg|gif))\|?(.*)\)\)/Ui', 'img', $line);
 			$line = preg_replace_callback('/\[([^\|]+)(\|.*)?\]/U', 'url', $line);
 		}
 		if ($current=='ul' || $current=='ol') $r.= '	<li>'.$line.'</li>'."\n";
@@ -215,7 +213,7 @@ function swPages() {
 	$pages = array_map('removeDirname',$pages);
 	return $pages;
 }
-function swAuth() {// TODO better looking
+function swAuth() {
 	global $_sw,$s,$p;
 	$form='<form method="post" action="'.$s.'?'.$p.'/edit">Username: <input type="text" name="login"/><br/>Password: <input type="password" name="pwd"/><br/><input type="submit"/></form>';
 	if (isset($_POST['login']) && $_POST['login']==$_sw['login'] && $_POST['pwd']==$_sw['pwd'] && $_sw['pwd']!='changethis')
@@ -243,9 +241,7 @@ function isAuth() {
 function swHeader($title='') {
 	global $p,$m,$s;
 	$title=$title==''?$p.($m!=''?' - '.$m:''):$title;
-	//TODO : css color variables
-	//TODO : dark theme
-	$color='449';//bleu
+	// $color='449';//bleu
 	$color='E70';//orange
 	//$color='944';//rouge
 	//$color='494';//vert
@@ -258,28 +254,31 @@ function swHeader($title='') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php echo $s; ?>?:rss" />
 <style>
-	body {color: #666;font-family: Georgia, 'Times New Roman', Times, serif;width: 80%;margin: 2em auto 2em;padding: 1em;border: 1px solid #<?php echo $color; ?>;}
-	a[href] {color: #666;text-decoration: underline;}
+	:root {--highlight: #<?php echo $color; ?>;}
+	@media (prefers-color-scheme: light) {:root {--color: #333;--bg: #fff;}}
+	@media (prefers-color-scheme: dark) {:root {--color: #eee;--bg: #333;}}
+	body {color: var(--color);font-family: Georgia, 'Times New Roman', Times, serif;width: 80%;margin: 2em auto 2em;padding: 1em;border: 1px solid var(--highlight);background-color: var(--bg);}
+	a[href] {color: var(--color);text-decoration: underline;}
 	a[href]:hover {text-decoration: none;}
 	quote {border-left: 0.3em solid #CCC;margin: 0.5em; padding: 0.3em;}
 	form .br {text-align: center;}
 	textarea {width: 95%; height: 20em;margin: auto;display: block;font-family: Georgia, 'Times New Roman', Times, serif;}
-	form input[type=submit], form input[type=file], form button {outline:none; background-color: #fff;color: #<?php echo $color; ?>;padding: 0.2em;margin:0.2em;border: 1px solid #<?php echo $color; ?>;border-radius:0.3em;}
-	form input[type=submit]:hover, form input[type=submit]:focus, form button:focus, input[type=file]:focus {background-color: #<?php echo $color; ?>;color:#fff;}
-	#fn {border-top: 1px solid #<?php echo $color; ?>;padding-top: 1em;}
+	form input[type=submit], form input[type=file], form button {outline:none; background-color: var(--bg);color: var(--highlight);padding: 0.2em;margin:0.2em;border: 1px solid var(--highlight);border-radius:0.3em;}
+	form input[type=submit]:hover, form input[type=submit]:focus, form button:focus, input[type=file]:focus {background-color: var(--highlight);color:var(--bg);}
+	#fn {border-top: 1px solid var(--highlight);padding-top: 1em;}
 	#fn li {list-style: none;font-size: 70%;}
-	#history {border-top: 1px solid #<?php echo $color; ?>;padding-top: 1em;}
+	#history {border-top: 1px solid var(--highlight);padding-top: 1em;}
 	#history li.current {font-style: italic;}
-	#footer {font-size: 80%;text-align: center;border-top: 1px solid #<?php echo $color; ?>;padding-top: 1em;}
+	#footer {font-size: 80%;text-align: center;border-top: 1px solid var(--highlight);padding-top: 1em;}
 	#footer li {display: inline; list-style: none;padding: 1em;}
-	#footer a {color: #<?php echo $color; ?>;}
+	#footer a {color: var(--highlight);}
 	#footer form {display: inline;}
 	#search li span{color: #999;padding-left: 1em;}
-	h1, h1 a[href], h2, h3, h4 {color: #<?php echo $color; ?>;letter-spacing: 0.1em;font-weight:normal;}
+	h1, h1 a[href], h2, h3, h4 {color: var(--highlight);letter-spacing: 0.1em;font-weight:normal;}
 	form h1 input {width: 95%; margin:auto;letter-spacing: 0.1em;font-weight:normal;font-size:1em;font-family: Georgia, 'Times New Roman', Times, serif;}
 	.hidden{display:none;}
-	#footer a[href].hidden {display:inline;color:#fff}
-	#footer:hover a[href].hidden {color:#<?php echo $color; ?>;}
+	#footer a[href].hidden {display:inline;color:var(--bg)}
+	#footer:hover a[href].hidden {color:var(--highlight);}
 	ul#footer {padding-left:0;}
 </style>
 </head>
