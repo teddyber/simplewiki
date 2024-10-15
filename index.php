@@ -1,11 +1,8 @@
 <?php
 /* TODO
-//include properties
 historique des PJs, restauration?
 themes
 macros : html, ??
-txt2tags
-images size
 configuration
 //*/
 $_sw['login']='changethis';
@@ -61,7 +58,7 @@ else {//pj?
 }
 /* functions **************************/
 function txt2html($txt,$page='') {
-	global $s,$p,$cp,$fn,$fnc;//,$disqus;
+	global $s,$p,$cp,$fn,$fnc;
 	$cp=$page;
 	$r='';
 	$txt = htmlentities($txt);
@@ -108,7 +105,7 @@ function txt2html($txt,$page='') {
 			$line = preg_replace('/!(.*)!/U', '</'.$previous.'>'."\n".'<h4>$1</h4>'."\n".'<'.$current.'>', $line);
 			$line = preg_replace('/\?\?([^\|]+)\|(.*)\?\?/U', '<acronym title="$2">$1</acronym>', $line);
 			$line = preg_replace_callback('/\$\$(.*)\$\$/U','footnote',$line);
-			$line = preg_replace_callback('/\(\(([^|]+\.(png|jpg|gif))\|?(.*)\)\)/Ui', 'img', $line);
+			$line = preg_replace_callback('/\(\(([^|]+\.(png|jpg|gif))\|?([^|]*)?\|?([^|]*)?\)\)/Ui', 'img', $line);
 			$line = preg_replace_callback('/\[([^\|]+)(\|.*)?\]/U', 'url', $line);
 		}
 		if ($current=='ul' || $current=='ol') $r.= '	<li>'.$line.'</li>'."\n";
@@ -116,7 +113,6 @@ function txt2html($txt,$page='') {
 	}
 	$r.= '</'.$previous.'>'."\n";
 	if ($fn!='') $r.='<ul id="fn">'.$fn.'</ul>';
-	//if ($disqus!='') $r.=$disqus;
 	return $r;
 }
 function img($m) {
@@ -126,11 +122,11 @@ function img($m) {
 		else {global $p;$img=$m[1];}
 		if($cp!='') $p=$cp;
 		$pjs=swGetAttachedFiles($p);
-		return '<a class="img" alt="'.substr($m[3],1).'" title="'.substr($m[3],1).'" href="./pages/'.$p.'/'.$img.'.'.$pjs[$p.'/'.$img][0].'">'.
-					'<img alt="'.substr($m[3],1).'" title="'.substr($m[3],1).'" src="./pages/'.$p.'/'.$img.'.'.$pjs[$p.'/'.$img][0].'" style="max-height:;max-width:"/>'.
+		return '<a class="img" alt="'.$m[3].'" title="'.$m[3].'" href="./pages/'.$p.'/'.$img.'.'.$pjs[$p.'/'.$img][0].'">'.
+					'<img alt="'.$m[3].'" title="'.$m[3].'" src="./pages/'.$p.'/'.$img.'.'.$pjs[$p.'/'.$img][0].'" style="max-height:'.$m[4].'px;max-width:'.$m[4].'px;"/>'.
 				'</a>';
 	} else {// external picture
-		return '<img alt="'.substr($m[2],1).'" title="'.substr($m[2],1).'" src="'.$m[1].'"/>';
+		return '<img alt="'.$m[3].'" title="'.$m[3].'" src="'.$m[1].'" style="max-height:'.$m[4].'px;max-width:'.$m[4].'px;"/>';
 	}
 }
 function url($m) {
