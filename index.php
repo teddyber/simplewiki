@@ -4,6 +4,7 @@ historique des PJs, restauration?
 themes
 macros : html, ??
 configuration
+manage hidden drafts (.title)
 //*/
 $_sw['login']='changethis';
 $_sw['pwd']='changethis';
@@ -341,8 +342,11 @@ function swEdit() {
 					move_uploaded_file($_FILES['pj']['tmp_name'], dirname(__FILE__).'/pages/'.$p.'/'.basename($_FILES['pj']['name']).'.'.date('Ymd-His'));
 				// }
 			}
+			header('Location: ./'.$s.'?'.$p.'/edit');
+			die;
 		}
 		header('Location: ./'.$s.'?'.$p);
+		die;
 	}
 	swHeader();
 	// preview
@@ -395,7 +399,7 @@ function swHistory() {
 		foreach($pjs as $pj => $versions) {
 			echo '<ul>';
 			foreach($versions as $version)
-				echo '<li>'.$pj.' - '.FormatReadableDate($version).
+				echo '<li><a target="_blank" href="'.$s.'/pages/'.$pj.'.'.$version.'">'.$pj.'</a> - '.FormatReadableDate($version).
 				' <a href="'.$s.'?'.$p.'/history/'.$version.'/delete/'.$pj.'">delete</a>'.
 				'</li>';
 			echo '</ul>';
