@@ -1,10 +1,9 @@
 <?php
 /* TODO
-historique des PJs, restauration?
+manage hidden drafts (.title)
 themes
 macros : html, ??
 configuration
-manage hidden drafts (.title)
 //*/
 $_sw['login']='changethis';
 $_sw['pwd']='changethis';
@@ -258,10 +257,13 @@ function swHeader($title='') {
 	a[href] {color: var(--color);text-decoration: underline;}
 	a[href]:hover {text-decoration: none;}
 	quote {border-left: 0.3em solid #CCC;margin: 0.5em; padding: 0.3em;}
+	h1, h1 a[href], h2, h3, h4 {color: var(--highlight);letter-spacing: 0.1em;font-weight:normal;}
+	.hidden{display:none;}
 	form .br {text-align: center;}
 	textarea {width: 95%; height: 20em;margin: auto;display: block;font-family: Georgia, 'Times New Roman', Times, serif;}
 	form input[type=submit], form input[type=file], form button {outline:none; background-color: var(--bg);color: var(--highlight);padding: 0.2em;margin:0.2em;border: 1px solid var(--highlight);border-radius:0.3em;}
 	form input[type=submit]:hover, form input[type=submit]:focus, form button:focus, input[type=file]:focus {background-color: var(--highlight);color:var(--bg);}
+	form h1 input {width: 95%; margin:auto;letter-spacing: 0.1em;font-weight:normal;font-size:1em;font-family: Georgia, 'Times New Roman', Times, serif;}
 	#fn {border-top: 1px solid var(--highlight);padding-top: 1em;}
 	#fn li {list-style: none;font-size: 70%;}
 	#history {border-top: 1px solid var(--highlight);padding-top: 1em;}
@@ -270,13 +272,10 @@ function swHeader($title='') {
 	#footer li {display: inline; list-style: none;padding: 1em;}
 	#footer a {color: var(--highlight);}
 	#footer form {display: inline;}
-	#search li span{color: #999;padding-left: 1em;}
-	h1, h1 a[href], h2, h3, h4 {color: var(--highlight);letter-spacing: 0.1em;font-weight:normal;}
-	form h1 input {width: 95%; margin:auto;letter-spacing: 0.1em;font-weight:normal;font-size:1em;font-family: Georgia, 'Times New Roman', Times, serif;}
-	.hidden{display:none;}
 	#footer a[href].hidden {display:inline;color:var(--bg)}
 	#footer:hover a[href].hidden {color:var(--highlight);}
 	ul#footer {padding-left:0;}
+	#search li span{color: #999;padding-left: 1em;}
 </style>
 </head>
 <body>
